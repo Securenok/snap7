@@ -27,6 +27,7 @@
 #define s7_micro_client_h
 //---------------------------------------------------------------------------
 #include "s7_peer.h"
+#include <cstdio>
 //---------------------------------------------------------------------------
 
 const longword errCliMask                   = 0xFFF00000;
@@ -112,6 +113,11 @@ typedef struct {
    // Chars info
    char CodeDate[11];
    char IntfDate[11];
+
+    // Chars info (millisecond-accurate)
+   char CodeDateTime[25];  // Format: "YYYY/MM/DD HH:MM:SS.mmm"
+   char IntfDateTime[25];
+
    char Author[9];
    char Family[9];
    char Header[9];
@@ -249,6 +255,7 @@ class TSnap7MicroClient: public TSnap7Peer
 {
 private:
     void FillTime(word SiemensTime, char *PTime);
+    void FillDateTime(word SiemensDay, u_int SiemensMs, char *PTime);
     byte BCDtoByte(byte B);
     byte WordToBCD(word Value);
     int opReadArea();
