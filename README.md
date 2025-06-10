@@ -13,14 +13,14 @@ For full instructions Refer to the **Rebuild Snap7** section of the official sit
   ```
   - **To rebuild the library:**
     ```sh
-    make –f x86_64_linux.mk all 
+    make -f x86_64_linux.mk all 
     ```
   - **To clean the project:**
     ```sh
-    make –f x86_64_linux.mk clean 
+    make -f x86_64_linux.mk clean 
     ```
   - **To rebuild and copy the library in 'usr/lib' (requires sudo permission):**
     ```sh
-    make –f x86_64_linux.mk install 
+    make -f x86_64_linux.mk install 
     ```
   - In the folder **snap7-full-1.4.2/build/bin/x86_64-linux**  you will find **libsnap7.so**.
