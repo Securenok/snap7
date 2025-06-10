@@ -827,6 +827,45 @@ void TSnap7MicroClient::FillTime(word SiemensTime, char *PTime)
     else
         *PTime='\0';
 }
+
+void TSnap7MicroClient::FillDateTime(word SiemensDay, u_int SiemensMs, char *PTime)
+{
+    time_t BaseTime = (SiemensDay * 86400) + DeltaSecs + (SiemensMs / 1000);
+    int millis = SiemensMs % 1000;
+
+    struct tm timeinfo;
+
+#if defined(_WIN32) || defined(_WIN64)
+    // Windows: use localtime_s
+    if (localtime_s(&timeinfo, &BaseTime) == 0) {
+        snprintf(PTime, 25, "%04d/%02d/%02d %02d:%02d:%02d.%03d",
+                 timeinfo.tm_year + 1900,
+                 timeinfo.tm_mon + 1,
+                 timeinfo.tm_mday,
+                 timeinfo.tm_hour,
+                 timeinfo.tm_min,
+                 timeinfo.tm_sec,
+                 millis);
+    } else {
+        *PTime = '\0';
+    }
+#else
+    // POSIX: use localtime_r
+    if (localtime_r(&BaseTime, &timeinfo) != NULL) {
+        snprintf(PTime, 25, "%04d/%02d/%02d %02d:%02d:%02d.%03d",
+                 timeinfo.tm_year + 1900,
+                 timeinfo.tm_mon + 1,
+                 timeinfo.tm_mday,
+                 timeinfo.tm_hour,
+                 timeinfo.tm_min,
+                 timeinfo.tm_sec,
+                 millis);
+    } else {
+        *PTime = '\0';
+    }
+#endif
+}
+
 //---------------------------------------------------------------------------
 int TSnap7MicroClient::opAgBlockInfo()
 {
@@ -911,6 +950,9 @@ int TSnap7MicroClient::opAgBlockInfo()
                  memcpy(BlockInfo->Header,ResData->Header,8);
                  FillTime(SwapWord(ResData->CodeTime_dy),BlockInfo->CodeDate);
                  FillTime(SwapWord(ResData->IntfTime_dy),BlockInfo->IntfDate);
+
+                 FillDateTime(SwapWord(ResData->CodeTime_dy), SwapDWord(ResData->CodeTime_ms), BlockInfo->CodeDateTime);
+                 FillDateTime(SwapWord(ResData->IntfTime_dy), SwapDWord(ResData->IntfTime_ms), BlockInfo->IntfDateTime);
                //---------------------------------------------->Fill block info
             }
             else
@@ -2937,6 +2979,9 @@ int TSnap7MicroClient::GetPgBlockInfo(void * pBlock, PS7BlockInfo pUsrData, int 
         pUsrData->Version  =0; // this info is not available
         FillTime(SwapWord(Info->CodeTime_dy),pUsrData->CodeDate);
         FillTime(SwapWord(Info->IntfTime_dy),pUsrData->IntfDate);
+
+        FillDateTime(SwapWord(Info->CodeTime_dy), SwapDWord(Info->CodeTime_ms), pUsrData->CodeDateTime);
+        FillDateTime(SwapWord(Info->IntfTime_dy), SwapDWord(Info->IntfTime_ms), pUsrData->IntfDateTime);
 
         Footer=PS7BlockFooter(pbyte(Info)+pUsrData->LoadSize-sizeof(TS7BlockFooter));
 
