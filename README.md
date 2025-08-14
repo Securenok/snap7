@@ -24,3 +24,25 @@ For full instructions Refer to the **Rebuild Snap7** section of the official sit
     make -f x86_64_linux.mk install 
     ```
   - In the folder **snap7-full-1.4.2/build/bin/x86_64-linux**  you will find **libsnap7.so**.
+
+
+## Build instruction for Debian package
+  - Make sure the above step of library build is done and the libraries are available in the folder  **snap7-full-1.4.2/build/bin/x86_64-linux**:  
+ 
+  - Update the following values in the script `snap7/build_snap7_debs.sh` (Replace directory name `/media/sf_snap7/` with your directory name) :  
+    ```sh
+    SRC_DIR="/media/sf_snap7/snap7-full-1.4.2/build/bin"
+    HEADERS_DIR="/media/sf_snap7/snap7-full-1.4.2/release"
+    ```
+  - **Run the script `snap7/build_snap7_debs.sh`**
+    ```sh
+    chmod +x build_snap7_debs.sh
+    ./build_snap7_debs.sh
+    ```
+  - Two debian packages will be build and available at `/tmp/snap7-securenok-amd64.deb` and  `/tmp/snap7-securenok-i386.deb`
+    
+  - **To install the debian package**
+    ```sh
+    dpkg -i /tmp/snap7-securenok-amd64.deb 
+    ```
+    - This will install the custom snap7 library `snap7-securenok-amd64.deb` in the folder `/usr/lib`.
