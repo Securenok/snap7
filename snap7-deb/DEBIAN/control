@@ -1,0 +1,10 @@
+Package: libsnap7
+Version: 1.0-securenok
+Section: libs
+Priority: optional
+Architecture: amd64
+Depends: libc6 (>= 2.27)
+Maintainer: Secure-NOK AS <support@securenok.com>
+Description: Modified Snap7 library from Securenok fork
+ A modified version of Snap7 for custom PLC communications.
+ 
