@@ -10,7 +10,7 @@ for ARCH in i386-linux x86_64-linux; do
         x86_64-linux) DEB_ARCH="amd64" ;;
     esac
 
-    PKG_DIR="/tmp/snap7-securenok-${DEB_ARCH}"
+    PKG_DIR="/tmp/libsnap7-securenok-${DEB_ARCH}"
     rm -rf "$PKG_DIR"
     mkdir -p "$PKG_DIR/DEBIAN"
     mkdir -p "$PKG_DIR/usr/lib"
