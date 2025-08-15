@@ -45,4 +45,4 @@ For full instructions Refer to the **Rebuild Snap7** section of the official sit
     ```sh
     dpkg -i /tmp/snap7-securenok-amd64.deb 
     ```
-    - This will install the custom snap7 library `snap7-securenok-amd64.deb` in the folder `/usr/lib`.
+    - This will install the custom snap7 library `libsnap7-securenok.so` in the folder `/usr/lib`.
